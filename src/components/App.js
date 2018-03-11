@@ -1,5 +1,6 @@
 import React from 'react';
 import PostTable from './PostTable';
+import SearchForm from './SearchForm';
 
 export default class App extends React.Component {
 	constructor() {
@@ -7,7 +8,11 @@ export default class App extends React.Component {
         // initial state
 		this.state = {
             posts: [],
+            searchText: ''
         };
+
+		this.onSearchTextChange = this.onSearchTextChange.bind(this);
+		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
 	}
 
 	componentDidMount() {
@@ -27,10 +32,23 @@ export default class App extends React.Component {
             });
     }
 
+    onSearchTextChange(value) {
+        this.setState({searchText: value});
+    }
+
+    onSearchButtonClicked() {
+        console.log('clicked');
+    }
+
 	render() {
 		return (
             <div>
-                <PostTable posts={this.state.posts}/>
+                <SearchForm
+                    onSearchTextChange={this.onSearchTextChange}
+                    onSearchButtonClicked={this.onSearchButtonClicked}
+                    searchText={this.state.searchText}/>
+                <PostTable
+                    posts={this.state.posts}/>
             </div>
 		);
 	}
