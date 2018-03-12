@@ -25,8 +25,9 @@ export default class SearchForm extends React.Component {
                     value={this.props.searchText}
                     onChange={this.handleSearchTextSearch}/>
                 <input
-                    type="submit"
+                    type="button"
                     id="search-input"
+                    value="Search Posts"
                     onClick={this.handleSearchButtonClick}/>
             </p>
         );

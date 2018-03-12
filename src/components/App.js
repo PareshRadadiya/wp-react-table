@@ -11,22 +11,28 @@ export default class App extends React.Component {
             searchText: ''
         };
 
+        this.collection = new wp.api.collections.Posts();
+
 		this.onSearchTextChange = this.onSearchTextChange.bind(this);
 		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
 	}
 
 	componentDidMount() {
-        this.collection = new wp.api.collections.Posts();
-        this.collection
-            .fetch({
-                reset: true,
-                data: {
-                    context: 'edit',
-                    _embed: 'true',
-                    per_page: 20,
-                    status: 'any',
-                }
-            })
+        const param = {
+            reset: true,
+            data: {
+            context: 'edit',
+                _embed: 'true',
+                per_page: 20,
+                status: 'any',
+            }
+        };
+
+        this.fetchPosts(param);
+    }
+
+    fetchPosts(param) {
+        this.collection.fetch(param)
             .done( posts => {
                 this.setState({posts: posts});
             });
@@ -37,7 +43,8 @@ export default class App extends React.Component {
     }
 
     onSearchButtonClicked() {
-        console.log('clicked');
+        const param = { data: { search: this.state.searchText } };
+        this.fetchPosts(param);
     }
 
 	render() {
