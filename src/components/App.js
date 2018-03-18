@@ -1,62 +1,84 @@
 import React from 'react';
 import PostTable from './PostTable';
 import SearchForm from './SearchForm';
+import NavTop from './NavTop';
 
 export default class App extends React.Component {
 	constructor() {
 		super();
-        // initial state
+		// initial state
 		this.state = {
-            posts: [],
-            searchText: ''
-        };
+			posts: [],
+			totalPage: 1,
+			page: 1,
+		};
 
-        this.collection = new wp.api.collections.Posts();
+		this.collection = new wp.api.collections.Posts();
+		this.fetchData = {
+			context: 'edit',
+			_embed: 'true',
+			per_page: 20,
+			status: 'any',
+		};
 
 		this.onSearchTextChange = this.onSearchTextChange.bind(this);
 		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
+		this.onCatChange = this.onCatChange.bind(this);
+		this.onFilterButtonClicked = this.onFilterButtonClicked.bind(this);
 	}
 
 	componentDidMount() {
-        const param = {
-            reset: true,
-            data: {
-            context: 'edit',
-                _embed: 'true',
-                per_page: 20,
-                status: 'any',
-            }
-        };
+		this.fetchPosts();
+	}
 
-        this.fetchPosts(param);
-    }
+	fetchPosts() {
+		this.collection.fetch({
+			reset: true,
+			data: this.fetchData
+		})
+			.done(posts => {
+				this.setState({posts: posts});
+			});
+	}
 
-    fetchPosts(param) {
-        this.collection.fetch(param)
-            .done( posts => {
-                this.setState({posts: posts});
-            });
-    }
+	onSearchTextChange(value) {
+		( this.fetchData.search = value ) || ( delete this.fetchData.search );
+	}
 
-    onSearchTextChange(value) {
-        this.setState({searchText: value});
-    }
+	onSearchButtonClicked() {
+		this.fetchPosts();
+	}
 
-    onSearchButtonClicked() {
-        const param = { data: { search: this.state.searchText } };
-        this.fetchPosts(param);
-    }
+	onDateChange() {
+
+	}
+
+	onCatChange(value) {
+		( this.fetchData.categories = value ) || ( delete this.fetchData.categories );
+	}
+
+	onFilterButtonClicked() {
+		this.fetchPosts();
+	}
 
 	render() {
 		return (
-            <div>
-                <SearchForm
-                    onSearchTextChange={this.onSearchTextChange}
-                    onSearchButtonClicked={this.onSearchButtonClicked}
-                    searchText={this.state.searchText}/>
-                <PostTable
-                    posts={this.state.posts}/>
-            </div>
+			<div>
+				<SearchForm
+					onSearchTextChange={this.onSearchTextChange}
+					onSearchButtonClicked={this.onSearchButtonClicked}
+					searchText={this.state.search}
+				/>
+				<NavTop
+					onDateChange={this.onDateChange}
+					onCatChange={this.onCatChange}
+					onFilterButtonClicked={this.onFilterButtonClicked}
+					dateFilter={this.state.dateFilter}
+					catFilter={this.state.catFilter}
+				/>
+				<PostTable
+					posts={this.state.posts}/>
+			</div>
 		);
 	}
 
