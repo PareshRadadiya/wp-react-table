@@ -21,7 +21,6 @@ export default class App extends React.Component {
 			status: 'any',
 		};
 
-		this.onSearchTextChange = this.onSearchTextChange.bind(this);
 		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
 		this.onCatChange = this.onCatChange.bind(this);
 		this.onFilterButtonClicked = this.onFilterButtonClicked.bind(this);
@@ -41,11 +40,8 @@ export default class App extends React.Component {
 			});
 	}
 
-	onSearchTextChange(value) {
-		( this.fetchData.search = value ) || ( delete this.fetchData.search );
-	}
-
 	onSearchButtonClicked() {
+		this.fetchData.search = this.searchInput.value;
 		this.fetchPosts();
 	}
 
@@ -65,10 +61,8 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<SearchForm
-					onSearchTextChange={this.onSearchTextChange}
 					onSearchButtonClicked={this.onSearchButtonClicked}
-					searchText={this.state.search}
-				/>
+					searchInputRef={ input => this.searchInput = input } />
 				<NavTop
 					onDateChange={this.onDateChange}
 					onCatChange={this.onCatChange}

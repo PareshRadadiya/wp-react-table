@@ -4,16 +4,12 @@ export default class SearchForm extends React.Component {
 
 	constructor(props) {
 		super(props);
+
 		this.handleSearchButtonClick = this.handleSearchButtonClick.bind(this);
-		this.handleSearchTextSearch = this.handleSearchTextSearch.bind(this);
 	}
 
 	handleSearchButtonClick() {
 		this.props.onSearchButtonClicked();
-	}
-
-	handleSearchTextSearch(e) {
-		this.props.onSearchTextChange(e.target.value);
 	}
 
 	render() {
@@ -22,8 +18,7 @@ export default class SearchForm extends React.Component {
 				<input
 					type="search"
 					id="post-search-input"
-					value={this.props.search}
-					onChange={this.handleSearchTextSearch}/>
+					ref={this.props.searchInputRef} />
 				<input
 					type="button"
 					id="search-input"
