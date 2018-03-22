@@ -47,7 +47,7 @@ export default class NavTop extends React.Component {
 					{this.state.dates
 						.map((date, index) => <option key={index}>{date.month}&nbsp;{date.year}</option>)}
 				</select>
-				<select name="cat" id="cat" className="cat" onChange={this.handleCatChange}>
+				<select name="cat" id="cat" className="cat" ref={this.props.catInputRef}>
 					<option value="">All Categories</option>
 					{this.state.categories
 						.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}

@@ -22,7 +22,6 @@ export default class App extends React.Component {
 		};
 
 		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
-		this.onCatChange = this.onCatChange.bind(this);
 		this.onFilterButtonClicked = this.onFilterButtonClicked.bind(this);
 	}
 
@@ -31,13 +30,17 @@ export default class App extends React.Component {
 	}
 
 	fetchPosts() {
+
+		// Remove unfiltered property
+		Object.keys(this.fetchData).forEach((key) => ( this.fetchData[key].length === 0) && delete this.fetchData[key] );
+
 		this.collection.fetch({
 			reset: true,
 			data: this.fetchData
 		})
-			.done(posts => {
-				this.setState({posts: posts});
-			});
+		.done(posts => {
+			this.setState({posts: posts});
+		});
 	}
 
 	onSearchButtonClicked() {
@@ -45,15 +48,8 @@ export default class App extends React.Component {
 		this.fetchPosts();
 	}
 
-	onDateChange() {
-
-	}
-
-	onCatChange(value) {
-		( this.fetchData.categories = value ) || ( delete this.fetchData.categories );
-	}
-
 	onFilterButtonClicked() {
+		this.fetchData.categories = this.catInput.value;
 		this.fetchPosts();
 	}
 
@@ -62,16 +58,15 @@ export default class App extends React.Component {
 			<div>
 				<SearchForm
 					onSearchButtonClicked={this.onSearchButtonClicked}
-					searchInputRef={ input => this.searchInput = input } />
+					searchInputRef={input => this.searchInput = input}
+				/>
 				<NavTop
-					onDateChange={this.onDateChange}
-					onCatChange={this.onCatChange}
+					catInputRef={input => this.catInput = input}
 					onFilterButtonClicked={this.onFilterButtonClicked}
-					dateFilter={this.state.dateFilter}
-					catFilter={this.state.catFilter}
 				/>
 				<PostTable
-					posts={this.state.posts}/>
+					posts={this.state.posts}
+				/>
 			</div>
 		);
 	}
