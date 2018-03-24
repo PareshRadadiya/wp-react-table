@@ -42,17 +42,32 @@ export default class NavTop extends React.Component {
 
 		return (
 			<div className="tablenav top">
-				<select name="m" id="filter-by-date">
+				<select
+					name="m"
+					id="filter-by-date"
+				>
 					<option value="0">All dates</option>
-					{this.state.dates
-						.map((date, index) => <option key={index}>{date.month}&nbsp;{date.year}</option>)}
+					{ this.state.date
+						.map((date, index) => <option key={ index }>{ date.month }&nbsp;{ date.year }</option>) }
 				</select>
-				<select name="cat" id="cat" className="cat" ref={this.props.catInputRef}>
+				<select
+					name="cat"
+					id="cat"
+					className="cat"
+					ref={ this.props.catInputRef }
+				>
 					<option value="">All Categories</option>
-					{this.state.categories
-						.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
+					{ this.state.categories
+						.map(category => <option key={ category.id } value={ category.id }>{ category.name }</option>) }
 				</select>
-				<input type="submit" name="filter_action" id="post-query-submit" className="button" value="Filter" onClick={this.onFilterButtonClicked}/>
+				<input
+					type="submit"
+					name="filter_action"
+					id="post-query-submit"
+					className="button"
+					value="Filter"
+					onClick={ this.onFilterButtonClicked }
+				/>
 			</div>
 		);
 	}

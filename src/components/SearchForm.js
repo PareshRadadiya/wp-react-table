@@ -18,12 +18,14 @@ export default class SearchForm extends React.Component {
 				<input
 					type="search"
 					id="post-search-input"
-					ref={this.props.searchInputRef} />
+					ref={ this.props.searchInputRef }
+				/>
 				<input
 					type="button"
 					id="search-input"
 					value="Search Posts"
-					onClick={this.handleSearchButtonClick}/>
+					onClick={ this.handleSearchButtonClick }
+				/>
 			</p>
 		);
 	}

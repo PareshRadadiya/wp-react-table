@@ -38,9 +38,9 @@ export default class App extends React.Component {
 			reset: true,
 			data: this.fetchData
 		})
-		.done(posts => {
-			this.setState({posts: posts});
-		});
+			.done(posts => {
+				this.setState({posts: posts});
+			});
 	}
 
 	onSearchButtonClicked() {
@@ -57,15 +57,15 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<SearchForm
-					onSearchButtonClicked={this.onSearchButtonClicked}
-					searchInputRef={input => this.searchInput = input}
+					onSearchButtonClicked={ this.onSearchButtonClicked }
+					searchInputRef={ input => this.searchInput = input }
 				/>
 				<NavTop
-					catInputRef={input => this.catInput = input}
-					onFilterButtonClicked={this.onFilterButtonClicked}
+					catInputRef={ input => this.catInput = input }
+					onFilterButtonClicked={ this.onFilterButtonClicked }
 				/>
 				<PostTable
-					posts={this.state.posts}
+					posts={ this.state.posts }
 				/>
 			</div>
 		);
