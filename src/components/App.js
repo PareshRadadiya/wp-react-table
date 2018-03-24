@@ -49,7 +49,17 @@ export default class App extends React.Component {
 	}
 
 	onFilterButtonClicked() {
+		// Category filter parameter
 		this.fetchData.categories = this.catInput.value;
+		// Date filter parameter
+		if ( this.dateInput.value ) {
+			let firstDate = new Date( this.dateInput.value );
+			this.fetchData.after = new Date(firstDate.getFullYear(), firstDate.getMonth(), 0).toISOString();
+			this.fetchData.before = new Date(firstDate.getFullYear(), firstDate.getMonth() + 1, 0).toISOString();
+		} else {
+			delete this.fetchData.before;
+			delete this.fetchData.after;
+		}
 		this.fetchPosts();
 	}
 
@@ -62,6 +72,7 @@ export default class App extends React.Component {
 				/>
 				<NavTop
 					catInputRef={ input => this.catInput = input }
+					dateInputRef={ input => this.dateInput = input }
 					onFilterButtonClicked={ this.onFilterButtonClicked }
 				/>
 				<PostTable

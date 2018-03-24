@@ -1,4 +1,5 @@
 import React from 'react';
+import { getMonthText } from '../helpers';
 
 export default class NavTop extends React.Component {
 	constructor(props) {
@@ -11,7 +12,6 @@ export default class NavTop extends React.Component {
 
 		this.collection = new wp.api.collections.Categories();
 
-		this.handleCatChange = this.handleCatChange.bind(this);
 		this.onFilterButtonClicked = this.onFilterButtonClicked.bind(this);
 	}
 
@@ -30,10 +30,6 @@ export default class NavTop extends React.Component {
 			.then(dates => this.setState({dates: dates}));
 	}
 
-	handleCatChange(e) {
-		this.props.onCatChange(e.target.value);
-	}
-
 	onFilterButtonClicked() {
 		this.props.onFilterButtonClicked();
 	}
@@ -45,10 +41,11 @@ export default class NavTop extends React.Component {
 				<select
 					name="m"
 					id="filter-by-date"
+					ref={ this.props.dateInputRef }
 				>
-					<option value="0">All dates</option>
-					{ this.state.date
-						.map((date, index) => <option key={ index }>{ date.month }&nbsp;{ date.year }</option>) }
+					<option value="">All dates</option>
+					{ this.state.dates
+						.map((date, index) => <option key={ index } value={ `${date.year},${date.month}` }>{ getMonthText(date.month) }&nbsp;{ date.year }</option>) }
 				</select>
 				<select
 					name="cat"
