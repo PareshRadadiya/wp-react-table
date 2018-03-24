@@ -13,8 +13,10 @@ export default class PostTable extends React.Component {
 			<table className="wp-list-table widefat fixed striped posts">
 				<thead>
 					<tr>
-						<td scope="col" className="manage-column">ID</td>
 						<td scope="col" className="manage-column">Title</td>
+						<td scope="col" className="manage-column">Author</td>
+						<td scope="col" className="manage-column">Category</td>
+						<td scope="col" className="manage-column">Date</td>
 					</tr>
 				</thead>
 				<tbody>

@@ -15,7 +15,7 @@ export default class App extends React.Component {
 
 		this.collection = new wp.api.collections.Posts();
 		this.fetchData = {
-			context: 'edit',
+			context: 'view',
 			_embed: 'true',
 			per_page: 20,
 			status: 'any',
