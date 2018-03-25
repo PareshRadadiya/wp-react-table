@@ -1,3 +1,3 @@
 ## WP React Table
 
-[![Screencast](http://g.recordit.co/dptJkqmN0O.gif)](http://recordit.co/dptJkqmN0O)
+[![Screencast](http://i.imgur.com/phMSsIy.gif)](http://recordit.co/dptJkqmN0O)
