@@ -62,7 +62,7 @@ export default class PaginationLinks extends React.Component {
 						value={ this.state.currentPage }
 						onChange={ this.handlePageChange }
 					/>
-					<span className="tablenav-paging-text"> of <span className="total-pages">2</span></span>
+					<span className="tablenav-paging-text"> of <span className="total-pages">{ this.props.totalPages }</span></span>
 				</span>
 				{
 					this.props.currentPage >= this.props.totalPages ? [

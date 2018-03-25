@@ -19,7 +19,6 @@ export default class App extends React.Component {
 			_embed: 'true',
 			per_page: 10,
 			status: 'any',
-			page: 1,
 		};
 
 		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
@@ -35,7 +34,7 @@ export default class App extends React.Component {
 	fetchPosts() {
 
 		// Remove unfiltered property
-		Object.keys(this.fetchData).forEach((key) => ( this.fetchData[key] && this.fetchData[key].length === 0) && delete this.fetchData[key] );
+		Object.keys(this.fetchData).forEach((key) => ( this.fetchData[key].length === 0) && delete this.fetchData[key] );
 
 		this.collection.fetch({
 			reset: true,
