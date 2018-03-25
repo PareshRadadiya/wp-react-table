@@ -1,69 +1,22 @@
 import React from 'react';
-import { getMonthText } from '../helpers';
+import TopFilters from './TopFilters';
+import Navigation from './Navigation';
 
 export default class NavTop extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			categories: [],
-			dates: [],
-		};
-
-		this.collection = new wp.api.collections.Categories();
-
-		this.onFilterButtonClicked = this.onFilterButtonClicked.bind(this);
-	}
-
-	componentDidMount() {
-		// fetch posts categories
-		this.collection.fetch({
-			reset: true,
-		})
-			.done(categories => {
-				this.setState({categories: categories});
-			});
-
-		// fetch posts date
-		window.fetch(`${window.wpApiSettings.root}wprt/v1/posts-date`)
-			.then(response => response.json())
-			.then(dates => this.setState({dates: dates}));
-	}
-
-	onFilterButtonClicked() {
-		this.props.onFilterButtonClicked();
-	}
 
 	render() {
-
 		return (
 			<div className="tablenav top">
-				<select
-					name="m"
-					id="filter-by-date"
-					ref={ this.props.dateInputRef }
-				>
-					<option value="">All dates</option>
-					{ this.state.dates
-						.map((date, index) => <option key={ index } value={ `${date.year},${date.month}` }>{ getMonthText(date.month) }&nbsp;{ date.year }</option>) }
-				</select>
-				<select
-					name="cat"
-					id="cat"
-					className="cat"
-					ref={ this.props.catInputRef }
-				>
-					<option value="">All Categories</option>
-					{ this.state.categories
-						.map(category => <option key={ category.id } value={ category.id }>{ category.name }</option>) }
-				</select>
-				<input
-					type="submit"
-					name="filter_action"
-					id="post-query-submit"
-					className="button"
-					value="Filter"
-					onClick={ this.onFilterButtonClicked }
+				<TopFilters
+					catInputRef={ this.props.catInputRef }
+					dateInputRef={ this.props.dateInputRef }
+					onFilterButtonClicked={ this.props.onFilterButtonClicked }
+				/>
+				<Navigation
+					totalPages={ this.props.totalPages }
+					totalObjects={ this.props.totalObjects }
+					currentPage={ this.props.currentPage }
+					handlePageChange={ this.props.handlePageChange }
 				/>
 			</div>
 		);

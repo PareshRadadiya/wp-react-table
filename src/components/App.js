@@ -4,42 +4,51 @@ import SearchForm from './SearchForm';
 import NavTop from './NavTop';
 
 export default class App extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		// initial state
 		this.state = {
 			posts: [],
-			totalPage: 1,
-			page: 1,
+			totalPages: 0,
+			totalObjects: 0,
+			currentPage: 0,
 		};
 
-		this.collection = new wp.api.collections.Posts();
 		this.fetchData = {
 			context: 'view',
 			_embed: 'true',
-			per_page: 20,
+			per_page: 10,
 			status: 'any',
+			page: 1,
 		};
 
 		this.onSearchButtonClicked = this.onSearchButtonClicked.bind(this);
 		this.onFilterButtonClicked = this.onFilterButtonClicked.bind(this);
+		this.onPageChange          = this.onPageChange.bind(this);
 	}
 
 	componentDidMount() {
+		this.collection = new wp.api.collections.Posts();
 		this.fetchPosts();
 	}
 
 	fetchPosts() {
 
 		// Remove unfiltered property
-		Object.keys(this.fetchData).forEach((key) => ( this.fetchData[key].length === 0) && delete this.fetchData[key] );
+		Object.keys(this.fetchData).forEach((key) => ( this.fetchData[key] && this.fetchData[key].length === 0) && delete this.fetchData[key] );
 
 		this.collection.fetch({
 			reset: true,
 			data: this.fetchData
 		})
 			.done(posts => {
-				this.setState({posts: posts});
+				this.setState({
+					posts: posts,
+					totalPages: this.collection.state.totalPages,
+					totalObjects: this.collection.state.totalObjects,
+					currentPage: this.collection.state.currentPage,
+				});
+
 			});
 	}
 
@@ -63,21 +72,34 @@ export default class App extends React.Component {
 		this.fetchPosts();
 	}
 
+	onPageChange(newPage) {
+		this.fetchData.page = newPage;
+		this.fetchPosts();
+	}
+
 	render() {
 		return (
-			<div>
-				<SearchForm
-					onSearchButtonClicked={ this.onSearchButtonClicked }
-					searchInputRef={ input => this.searchInput = input }
-				/>
-				<NavTop
-					catInputRef={ input => this.catInput = input }
-					dateInputRef={ input => this.dateInput = input }
-					onFilterButtonClicked={ this.onFilterButtonClicked }
-				/>
-				<PostTable
-					posts={ this.state.posts }
-				/>
+			<div className="wrap">
+				<h1 className="wp-heading-inline">Posts</h1>
+				<form id="posts-filter" method="get">
+					<SearchForm
+						onSearchButtonClicked={ this.onSearchButtonClicked }
+						searchInputRef={ input => this.searchInput = input }
+					/>
+					<NavTop
+						catInputRef={ input => this.catInput = input }
+						dateInputRef={ input => this.dateInput = input }
+						onFilterButtonClicked={ this.onFilterButtonClicked }
+						totalPages={ this.state.totalPages }
+						totalObjects={ this.state.totalObjects }
+						currentPage={ this.state.currentPage }
+						handlePageChange={ this.onPageChange }
+					/>
+					<PostTable
+						posts={ this.state.posts }
+						totalObjects={ this.state.totalObjects }
+					/>
+				</form>
 			</div>
 		);
 	}

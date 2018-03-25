@@ -20,7 +20,13 @@ export default class PostTable extends React.Component {
 					</tr>
 				</thead>
 				<tbody>
-					{rows}
+					{ 0 < this.props.totalObjects ? rows :
+						<tr>
+							<td colSpan="4" className="colspanchange">
+								No posts found.
+							</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		);
